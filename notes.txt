@@ -1,0 +1,18 @@
+sketchfab -- 3d rendering of characters
+video of the marvel intro?
+colors: red, white, gold, black?
+character cards with a basic image they can click on that 
+    will lead to the character info sheet 
+        and 3d rendering
+
+404 page
+navbar 
+
+(home, all characters, 
+
+create a character: character editor (visual confirmation), character deletor (visual conformation alert) )
+
+create a form to create your own character - user submits and gets an AI image of their character
+it is then saved for that user and can be deleted
+
+just to be safe, also have it where users can edit/delete information on already saved characters.

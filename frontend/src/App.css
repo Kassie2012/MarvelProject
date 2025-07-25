@@ -1,0 +1,35 @@
+/* Import Orbitron  */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+
+body {
+  background: linear-gradient(to bottom, #11004f 80%, #fbffb4 100%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+
+  color: hsl(0, 0%, 0%);
+  margin: 0;
+  padding: 0;
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* Clean Headings (no shadows or weird effects) */
+h1, h2, h3 {
+  font-weight: 700;
+  color: #ff003c; /* bright red */
+  margin-bottom: 1rem;
+  letter-spacing: 0.5px; /* slight spacing for readability */
+}
+
+/* Lead text */
+.lead {
+  color: #0e003f;
+  font-size: 1.25rem;
+}
+
+/* Navbar clean look */
+.navbar {
+  font-family: 'Orbitron', sans-serif;
+  border-bottom: 4px solid #eeff00;
+  background: #ff0000 !important;
+}
