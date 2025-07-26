@@ -1,4 +1,4 @@
-import react from 'react';
+import React from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import EntryScreen from './components/EntryScreen';
 import Home from './pages/Home.jsx';
@@ -29,4 +29,4 @@ function App() {
 }
 
 
-export default App
+export default App;

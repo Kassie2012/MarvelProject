@@ -5,7 +5,7 @@ import { Container, Row, Col, Card, Button, Spinner, Alert } from 'react-bootstr
 function MutantIndex() {
   const [mutants, setMutants] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError]= useState('');
+  const [error, setError] = useState('');
   const location = useLocation();
 
   // Extract search query from URL
@@ -41,34 +41,33 @@ function MutantIndex() {
     setError('');
 
     fetch('http://localhost:5000/characters')
-    .then((res) => {
-      if (!res.ok) throw new Error('Failed to fetch mutants');
-    return res.json();
-     })
-    .then((data) => {
-      const filtered = searchTerm
-      ? data.filter(
-        (mutant) => 
-          mutant.name.toLowerCase().includes(searchTerm) ||
-        (mutant.alias || '').toLowerCase().includes(searchTerm)
-      )
-      : data;
-      setMutants(filtered);
-    })
-    .catch((err) => {
-      console.error('Error loading mutants:', err);
-      setError('Failed to load mutants. Please try again later.');
-    })
-    .finally(() => setLoading(false));
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch mutants');
+        return res.json();
+      })
+      .then((data) => {
+        const filtered = searchTerm
+          ? data.filter(
+              (mutant) =>
+                mutant.name.toLowerCase().includes(searchTerm) ||
+                (mutant.alias || '').toLowerCase().includes(searchTerm)
+            )
+          : data;
+        setMutants(filtered);
+      })
+      .catch((err) => {
+        console.error('Error loading mutants:', err);
+        setError('Failed to load mutants. Please try again later.');
+      })
+      .finally(() => setLoading(false));
   }, [searchTerm]);
 
-//handle loading stat
-
-  if(loading) {
+  // Handle loading state
+  if (loading) {
     return (
       <Container className="text-center mt-5">
-      <Spinner animation="border" variant="primary" />
-      <p className="mt-3">Loading mutants...</p>
+        <Spinner animation="border" variant="primary" />
+        <p className="mt-3">Loading mutants...</p>
       </Container>
     );
   }

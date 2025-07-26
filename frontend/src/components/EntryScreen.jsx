@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Container, Button, Spinner, Fade } from 'react-bootstrap';
 import { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function EntryScreen() {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ function EntryScreen() {
     setTimeout(() => setShowFade(true), 50); // triggers fade effect
     setTimeout(() => {
       navigate('/home');
-    }, 3500); 
+    }, 2000); 
   };
 
   return (
@@ -32,7 +33,7 @@ function EntryScreen() {
       ) : (
         <Fade in={showFade}>
           <div className="mt-4">
-            <Spinner animation="border" variant="light" />
+            <Spinner animation="border" variant="light" role="status" />
             <p className="text-light mt-2">Welcome, Friend of Humanity...</p>
           </div>
         </Fade>

@@ -1,12 +1,43 @@
-# React + Vite
+# Friends of Humanity Mutant Database
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
+The **Friends of Humanity (FoH)** have decided to create their own mutant database to catalog and monitor mutants from around the world.  
+This fictional web application is based in the **X-Men universe** and lists **heroes** and **villains** alike, reflecting the group's agenda of identifying and tracking all mutants, regardless of their alignment.
 
-Currently, two official plugins are available:
+This project was created as part of a learning experience using **React**, **Flask**, and **MySQL**, with styling provided by **Bootstrap**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## Features
+- **Mutant Index** – View all mutants in the database (Heroes, Villains, Neutral).  
+- **Mutant Details Page** – View detailed information about each mutant and their abilities.  
+- **Add Mutant** – Users can submit new mutants to the database (stored separately as user-created).  
+- **Edit Mutant** – User-created mutants can be edited to update information.  
+- **Delete Mutant** – User-created mutants can also be deleted.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## Tech Stack
+### Frontend
+- React
+- React Bootstrap
+- React Router DOM
+
+### Backend
+- Flask (Python)
+- MySQL Database
+- Flask-CORS for cross-origin requests
+
+---
+
+## Database Structure
+### Table: `characters`
+- **id** – Primary Key  
+- **name** – Name of the mutant  
+- **alias** – Known alias or code name  
+- **alignment** – Hero / Villain / Neutral  
+- **powers** – Description of mutant powers  
+- **image_url** – Link to character image  
+- **user_created** – Boolean (whether this record was added by a user)
+
+

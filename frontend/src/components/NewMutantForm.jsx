@@ -6,7 +6,7 @@ function NewMutantForm() {
     name: '',
     alias: '',
     powers: '',
-    alignment: 'Hero',
+    alignment: 'hero',
     image: ''
   });
 
