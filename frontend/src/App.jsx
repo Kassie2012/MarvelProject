@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import react from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import EntryScreen from './components/EntryScreen';
 import Home from './pages/Home.jsx';
 import MutantIndex from './pages/MutantIndex';
@@ -6,7 +7,6 @@ import CharacterPage from './components/CharacterPage.jsx'
 import NewMutantForm from './components/NewMutantForm';
 import ErrorPage from './pages/ErrorPage';
 import AppNavbar from './components/Navbar';
-import { useLocation } from 'react-router-dom';
 
 function App() {
   

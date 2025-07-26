@@ -13,6 +13,7 @@ function NewMutantForm() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [variant, setVariant] = useState('success');
+  const [validated, setValidated] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,13 +23,20 @@ function NewMutantForm() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
-    setSuccess(false);
+    const form = e.currentTarget;
 
-    fetch('http://localhost:5000/characters', {
+    if (!form.checkValidity()) {
+      e.stopPropagation();
+      setValidated(true)
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch('http://localhost:5000/characters', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -39,20 +47,22 @@ function NewMutantForm() {
         image_url: formData.image
       })
     })
-      .then((res) => {
-        if (!res.ok) throw new Error(`Failed to add mutant: ${res.status}`);
-        return res.json();
-      })
-      .then(() => {
-        setVariant('success');
-        setMessage('Mutant added successfully!');
-      })
-      .catch((error) => {
+
+      if (!res.ok) throw new Error(`Failed to add mutant: ${res.status}`);
+    
+      setVariant('success');
+      setMessage('Mutant added successfully!');
+      setFormData({ name:'', alias: '', powers: '', alignment: 'Hero', image: '' });
+        setValidated(false);
+      } catch (error) {
         setVariant('danger');
         setMessage(error.message);
-      })
-      .finally(() => setLoading(false));
-  };
+      } finally {
+        setLoading(false);
+        setTimeout(() => setMessage(''), 3000);
+      }
+    };
+  
 
   return (
     <div className="container p-4 mt-5 shadow-lg rounded bg-light">
@@ -60,7 +70,7 @@ function NewMutantForm() {
 
       {message && <Alert variant={variant}>{message}</Alert>}
 
-      <Form onSubmit={handleSubmit}>
+      <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="mutantName">
           <Form.Label>Name *</Form.Label>
           <Form.Control
@@ -70,6 +80,9 @@ function NewMutantForm() {
             onChange={handleChange}
             required
           />
+          <Form.Control.Feedback type="invalid">
+            Please provide a name.
+          </Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="mutantAlias">
@@ -92,6 +105,9 @@ function NewMutantForm() {
             onChange={handleChange}
             required
           />
+          <Form.Control.Feedback type="invalid">
+            Please describe the mutant's powers.
+          </Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="mutantAlignment">
@@ -118,7 +134,13 @@ function NewMutantForm() {
         </Form.Group>
 
         <Button type="submit" variant="danger" disabled={loading} className="w-100">
-          {loading ? <><Spinner animation="border" size="sm" /> Submitting...</> : 'Submit Mutant'}
+          {loading ? (
+          <><Spinner animation="border" size="sm" /> 
+          Submitting...
+          </>
+          ) : (
+            'Submit Mutant'
+          )}
         </Button>
       </Form>
     </div>

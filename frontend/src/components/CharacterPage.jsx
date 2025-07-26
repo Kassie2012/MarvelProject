@@ -14,7 +14,9 @@ function CharacterPage() {
   const [editableData, setEditableData] = useState({ alias: '', powers: '', alignment: '' });
   const [message, setMessage] = useState(null);
   const [variant, setVariant] = useState('success');
+  const [validated, setValidated] = useState(false);
 
+  // Fetch character data
   useEffect(() => {
     fetch(`http://localhost:5000/characters/${id}`)
       .then((res) => {
@@ -26,7 +28,7 @@ function CharacterPage() {
         setEditableData({
           alias: data.alias || '',
           powers: data.powers || '',
-          alignment: data.alignment || 'Neutral'
+          alignment: data.alignment || 'Hero'
         });
       })
       .catch((err) => setError(err.message))
@@ -38,11 +40,25 @@ function CharacterPage() {
     setEditableData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    if (!form.checkValidity()) {
+      e.stopPropagation();
+      setValidated(true);
+      return;
+    }
+
     fetch(`http://localhost:5000/characters/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(editableData)
+      body: JSON.stringify({
+        name: character.name,
+        alias: editableData.alias,
+        powers: editableData.powers,
+        alignment: editableData.alignment,
+        image_url: character.image_url
+      })
     })
       .then((res) => {
         if (!res.ok) throw new Error('Failed to update');
@@ -52,7 +68,14 @@ function CharacterPage() {
         setMessage('Character updated successfully!');
         setVariant('success');
         setEditMode(false);
-        setCharacter((prev) => ({ ...prev, ...editableData }));
+        setValidated(false);
+        setCharacter((prev) => ({
+          ...prev,
+          alias: editableData.alias,
+          powers: editableData.powers,
+          alignment: editableData.alignment
+        }));
+        setTimeout(() => setMessage(''), 3000);
       })
       .catch((err) => {
         setMessage(err.message);
@@ -85,7 +108,13 @@ function CharacterPage() {
       });
   };
 
-  if (loading) return <Spinner animation="border" />;
+  if (loading) return (
+    <div className="text-center mt-5">
+      <Spinner animation="border" />
+      <p>Loading character data...</p>
+    </div>
+  );
+
   if (error) return <Alert variant="danger">{error}</Alert>;
 
   return (
@@ -110,45 +139,59 @@ function CharacterPage() {
         </>
       ) : (
         <>
-          <Form.Group className="mb-2">
-            <Form.Label>Alias</Form.Label>
-            <Form.Control
-              name="alias"
-              value={editableData.alias}
-              onChange={handleChange}
-            />
-          </Form.Group>
+          <Form noValidate validated={validated} onSubmit={handleUpdate}>
+            <Form.Group className="mb-2">
+              <Form.Label>Alias</Form.Label>
+              <Form.Control
+                name="alias"
+                value={editableData.alias}
+                onChange={handleChange}
+                required
+              />
+              <Form.Control.Feedback type="invalid">
+                Please provide a valid alias.
+              </Form.Control.Feedback>
+            </Form.Group>
 
-          <Form.Group className="mb-2">
-            <Form.Label>Powers</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              name="powers"
-              value={editableData.powers}
-              onChange={handleChange}
-            />
-          </Form.Group>
+            <Form.Group className="mb-2">
+              <Form.Label>Powers</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                name="powers"
+                value={editableData.powers}
+                onChange={handleChange}
+                required
+              />
+              <Form.Control.Feedback type="invalid">
+                Please provide valid powers.
+              </Form.Control.Feedback>
+            </Form.Group>
 
-          <Form.Group className="mb-2">
-            <Form.Label>Alignment</Form.Label>
-            <Form.Select
-              name="alignment"
-              value={editableData.alignment}
-              onChange={handleChange}
-            >
-              <option value="Hero">Hero</option>
-              <option value="Villain">Villain</option>
-              <option value="Neutral">Neutral</option>
-            </Form.Select>
-          </Form.Group>
+            <Form.Group className="mb-2">
+              <Form.Label>Alignment</Form.Label>
+              <Form.Select
+                name="alignment"
+                value={editableData.alignment}
+                onChange={handleChange}
+                required
+              >
+                <option value="Hero">Hero</option>
+                <option value="Villain">Villain</option>
+                <option value="Neutral">Neutral</option>
+              </Form.Select>
+              <Form.Control.Feedback type="invalid">
+                Please select an alignment.
+              </Form.Control.Feedback>
+            </Form.Group>
 
-          <Button variant="success" onClick={handleUpdate} className="me-2">
-            Save Changes
-          </Button>
-          <Button variant="secondary" onClick={() => setEditMode(false)}>
-            Cancel
-          </Button>
+            <Button variant="success" type="submit" className="me-2">
+              Save Changes
+            </Button>
+            <Button variant="secondary" onClick={() => setEditMode(false)}>
+              Cancel
+            </Button>
+          </Form>
         </>
       )}
       <hr />
