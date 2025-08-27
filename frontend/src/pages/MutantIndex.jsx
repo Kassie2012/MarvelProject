@@ -96,7 +96,7 @@ function MutantIndex() {
                   <Card.Img variant="top" src={mutant.image_url} alt={mutant.name} />
                 )}
                 <Card.Body>
-                  <Card.Title>{mutant.name}</Card.Title>
+                  <Card.Title>{mutant.alias || mutant.name}</Card.Title>
                   <Card.Text>
                     <strong>Alignment:</strong> {mutant.alignment}
                   </Card.Text>
