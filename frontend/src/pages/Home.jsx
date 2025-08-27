@@ -33,7 +33,7 @@ function Home() {
 
               <div className="d-flex justify-content-center gap-3 mt-4">
                 <Button as={Link} to="/mutants" variant="outline-warning" size="lg">
-                  Mutant Index
+                  Mutant Database
                 </Button>
                 <Button as={Link} to="/submit-mutant" variant="outline-warning" size="lg">
                   Submit a Mutant
