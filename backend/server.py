@@ -16,7 +16,7 @@ mysql = MySQL(app)
 @app.route('/characters', methods=['GET'])
 def get_characters():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM characters")
+    cur.execute("SELECT * FROM characters ORDER BY id ASC")
     rows = cur.fetchall()
     cur.close()
 
@@ -61,14 +61,21 @@ def get_character(character_id):
 
 @app.route('/characters', methods=['POST'])
 def add_character():
-    data = request.get_json()
-    alignment = data['alignment'] if data['alignment'] else 'neutral'
+    data = request.get_json() or {}
+    name = data.get('name', '').strip()
+    alias = data.get('alias', '').strip()
+    powers = data.get('powers', '').strip()
+    alignment = (data.get('alignment') or 'neutral').strip().lower()
+    image_url = data.get('image_url', '').strip()
+
+    if not name or not powers:
+        return jsonify({'message': 'Name and powers are required fields'}), 400
 
     cur = mysql.connection.cursor()
     cur.execute("""
         INSERT INTO characters (name, alias, alignment, powers, image_url, user_created)
         VALUES (%s, %s, %s, %s, %s, TRUE)
-    """, (data['name'], data['alias'], alignment, data['powers'], data['image_url']))
+    """, (name, alias, alignment, powers, image_url))
     
     mysql.connection.commit()
     new_id= cur.lastrowid
@@ -83,7 +90,13 @@ def add_character():
 
 @app.route('/characters/<int:character_id>', methods=['PUT'])
 def update_character(character_id):
-    data = request.get_json()
+    data = request.get_json() or {}
+    name = (data.get('name') or '').strip()
+    alias = (data.get('alias') or '').strip()
+    powers = (data.get('powers') or '').strip()
+    alignment = (data.get('alignment') or 'neutral').strip().lower()
+    image_url = (data.get('image_url') or '').strip()
+
     cur = mysql.connection.cursor()
 
     # Check if the character exists
@@ -93,11 +106,16 @@ def update_character(character_id):
         return jsonify({'message': 'Character not found'}), 404
 
     # Update the character
+    cur.execute("Select id FROM characters WHERE id = %s", (character_id,))
+    if not cur.fetchone():
+        cur.close()
+        return jsonify({'message': 'Character not found'}), 404
+
     cur.execute("""
         UPDATE characters
         SET name = %s, alias = %s, alignment = %s, powers = %s, image_url = %s
         WHERE id = %s
-    """, (data['name'], data['alias'], data['alignment'], data['powers'], data['image_url'], character_id))
+    """, (name, alias, alignment, powers, image_url, character_id))
     
     mysql.connection.commit()
     cur.close()
@@ -112,6 +130,7 @@ def delete_character(character_id):
     result = cur.fetchone()
     
     if not result:
+        cur.close()
         return jsonify({'message': 'Character not found'}), 404
 
     user_created = result[0]

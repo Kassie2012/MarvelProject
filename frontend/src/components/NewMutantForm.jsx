@@ -6,8 +6,8 @@ function NewMutantForm() {
     name: '',
     alias: '',
     powers: '',
-    alignment: 'hero',
-    image: ''
+    alignment: 'Hero',
+    image_url: ''
   });
 
   const [loading, setLoading] = useState(false);
@@ -43,23 +43,23 @@ function NewMutantForm() {
         name: formData.name,
         alias: formData.alias,
         powers: formData.powers,
-        alignment: formData.alignment,
-        image_url: formData.image
+        alignment: formData.alignment.toLowerCase(),
+        image_url: formData.image_url
       })
     })
 
       if (!res.ok) throw new Error(`Failed to add mutant: ${res.status}`);
     
       setVariant('success');
-      setMessage('Mutant added successfully!');
-      setFormData({ name:'', alias: '', powers: '', alignment: 'Hero', image: '' });
+      setMessage('Mutant added successfully! Thank you for your contribution to the Future of Humanity.');
+      setFormData({ name:'', alias: '', powers: '', alignment: 'Hero', image_url: '' });
         setValidated(false);
       } catch (error) {
         setVariant('danger');
         setMessage(error.message);
       } finally {
         setLoading(false);
-        setTimeout(() => setMessage(''), 3000);
+        setTimeout(() => setMessage(null), 3000);
       }
     };
   
@@ -127,8 +127,8 @@ function NewMutantForm() {
           <Form.Label>Image URL</Form.Label>
           <Form.Control
             type="url"
-            name="image"
-            value={formData.image}
+            name="image_url"
+            value={formData.image_url}
             onChange={handleChange}
           />
         </Form.Group>

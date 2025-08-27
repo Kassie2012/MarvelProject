@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Container, Button, Spinner, Fade } from 'react-bootstrap';
 import { useState } from 'react';
+import foh1 from '../assets/foh1.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function EntryScreen() {
@@ -18,6 +19,12 @@ function EntryScreen() {
 
   return (
     <Container className="text-center mt-5">
+      <img
+        src={foh1}
+        alt="Future of Humanity"
+        className="img-fluid rounded"
+        style={{ maxHeight: '200px', width: 'auto' }}
+      />
       <h1 className="display-3 text-danger">Top Secret</h1>
       <p className="lead text-light">Authorized Personnel Only</p>
 

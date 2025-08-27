@@ -2,6 +2,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Container, Card, Button, Spinner, Alert, Form } from 'react-bootstrap';
 
+//convert backend alignment to frontend format
+function toFrontendAlignment(alignment) {
+  if (!alignment) return 'Hero';
+  return alignment.charAt(0).toUpperCase() + alignment.slice(1).toLowerCase();
+} 
+
+
 function CharacterPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -32,7 +39,7 @@ function CharacterPage() {
           name: data.name || '',
           alias: data.alias || '',
           powers: data.powers || '',
-          alignment: data.alignment || 'Hero',
+          alignment: toFrontendAlignment(data.alignment) || 'Hero',
         });
       })
       .catch((err) => setError(err.message))
@@ -60,7 +67,7 @@ function CharacterPage() {
         name: editableData.name,
         alias: editableData.alias,
         powers: editableData.powers,
-        alignment: editableData.alignment,
+        alignment: editableData.alignment.toLowerCase(),
         image_url: character.image_url,
       }),
     })
@@ -80,7 +87,7 @@ function CharacterPage() {
           powers: editableData.powers,
           alignment: editableData.alignment,
         }));
-        setTimeout(() => setMessage(''), 3000);
+        setTimeout(() => setMessage(null), 3000);
       })
       .catch((err) => {
         setMessage(err.message);
@@ -89,7 +96,7 @@ function CharacterPage() {
   };
 
   const handleDelete = () => {
-    if (!window.confirm('Are you sure you want to delete this character?')) return;
+    if (!window.confirm('Are you sure you want to delete this Mutant?')) return;
 
     fetch(`http://localhost:5000/characters/${id}`, { method: 'DELETE' })
       .then((res) => {
