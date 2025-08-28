@@ -60,9 +60,6 @@ Install dependencies:
 
 pip install -r requirements.txt
 
-
-Configure your database in config.py (user, password, database name).
-
 Run the server:
 python server.py
 
