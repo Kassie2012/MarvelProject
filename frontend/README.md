@@ -1,43 +1,78 @@
-# Friends of Humanity Mutant Database
+M7PROJECT Mutant Database
+Overview
 
-## Overview
-The **Friends of Humanity (FoH)** have decided to create their own mutant database to catalog and monitor mutants from around the world.  
-This fictional web application is based in the **X-Men universe** and lists **heroes** and **villains** alike, reflecting the group's agenda of identifying and tracking all mutants, regardless of their alignment.
+The Friends of Humanity (FoH) have created a satirical “classified” mutant database to track and catalog mutants from around the world.
 
-This project was created as part of a learning experience using **React**, **Flask**, and **MySQL**, with styling provided by **Bootstrap**.
+This fictional application is inspired by the X-Men universe, designed to log both heroes and villains—mirroring the FoH’s obsessive mission to monitor all mutants, regardless of alignment.
 
----
+The project was built as part of a full-stack learning experience using React, Flask, and MySQL, styled with Bootstrap.
 
-## Features
-- **Mutant Index** – View all mutants in the database (Heroes, Villains, Neutral).  
-- **Mutant Details Page** – View detailed information about each mutant and their abilities.  
-- **Add Mutant** – Users can submit new mutants to the database (stored separately as user-created).  
-- **Edit Mutant** – User-created mutants can be edited to update information.  
-- **Delete Mutant** – User-created mutants can also be deleted.
+Features
 
----
+Mutant Index – Browse all mutants in the database (Heroes, Villains, Neutral).
+Mutant Details – View powers, aliases, and alignment for each mutant.
+Add Mutant – Submit custom mutants (saved as user-created records).
+Edit Mutant – Update alias, alignment, or powers for user-created entries.
+Delete Mutant – Remove user-created records (official database entries remain locked).
 
-## Tech Stack
-### Frontend
-- React
-- React Bootstrap
-- React Router DOM
+Tech Stack
+Frontend
+React
+React Bootstrap
+React Router DOM
 
-### Backend
-- Flask (Python)
-- MySQL Database
-- Flask-CORS for cross-origin requests
+Backend
+Flask (Python)
+MySQL
+Flask-CORS for cross-origin support
+Database Structure
+Table: characters
 
----
+id – Primary Key
+name – Real name of the mutant
+alias – Codename / alias
+alignment – Hero / Villain / Neutral
+powers – Description of abilities
+image_url – Character image link
+user_created – Boolean (True = user-added, False = official database entry)
 
-## Database Structure
-### Table: `characters`
-- **id** – Primary Key  
-- **name** – Name of the mutant  
-- **alias** – Known alias or code name  
-- **alignment** – Hero / Villain / Neutral  
-- **powers** – Description of mutant powers  
-- **image_url** – Link to character image  
-- **user_created** – Boolean (whether this record was added by a user)
+Getting Started
+Prerequisites
+
+Node.js & npm
+Python 3.x
+MySQL
+Backend Setup (Flask + MySQL)
+
+Navigate to the backend folder:
+
+cd backend
 
 
+Create and activate a virtual environment:
+
+python -m venv venv
+source venv/bin/activate   # Mac/Linux
+venv\Scripts\activate      # Windows
+
+
+Install dependencies:
+
+pip install -r requirements.txt
+
+
+Configure your database in config.py (user, password, database name).
+
+Run the server:
+python server.py
+
+Frontend Setup (React)
+Navigate to the frontend folder:
+
+cd frontend
+Install dependencies:
+
+npm install
+
+Run the app:
+npm run dev
